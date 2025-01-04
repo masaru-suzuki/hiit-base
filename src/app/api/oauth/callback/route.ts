@@ -1,11 +1,8 @@
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
-  console.log("GET /api/oauth/callback");
-
   const { searchParams } = new URL(req.url);
   const code = searchParams.get("code");
-  console.log({ code });
 
   if (!code) {
     return NextResponse.json(
@@ -16,12 +13,16 @@ export async function GET(req: Request) {
 
   const clientId = process.env.POLAR_CLIENT_ID;
   const clientSecret = process.env.POLAR_CLIENT_SECRET;
-  const siteUrl =
-    process.env.NODE_ENV === "production"
-      ? process.env.SITE_URL
-      : "https://localhost:3000";
-  const redirectUri = `${siteUrl}/api/oauth/callback`;
-  console.log({ redirectUri });
+
+  const headers = {
+    "Content-Type": "application/x-www-form-urlencoded",
+    Accept: "application/json",
+    Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString(
+      "base64",
+    )}`,
+  };
+
+  console.log(headers);
 
   if (!clientId || !clientSecret)
     return NextResponse.json(
@@ -32,15 +33,13 @@ export async function GET(req: Request) {
   try {
     const response = await fetch("https://polarremote.com/v2/oauth2/token", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
+      headers,
       body: new URLSearchParams({
         grant_type: "authorization_code",
         code,
-        redirect_uri: redirectUri,
-        client_id: clientId,
-        client_secret: clientSecret,
+        // redirect_uri: redirectUri,
+        // client_id: clientId,
+        // client_secret: clientSecret,
       }).toString(),
     });
 

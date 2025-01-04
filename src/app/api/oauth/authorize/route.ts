@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  console.log("GET /api/oauth/authorize");
   const clientId = process.env.POLAR_CLIENT_ID;
   const siteUrl =
     process.env.NODE_ENV === "production"
