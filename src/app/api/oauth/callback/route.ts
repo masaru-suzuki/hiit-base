@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
+  console.log("GET /api/oauth/callback");
+
   const { searchParams } = new URL(req.url);
   const code = searchParams.get("code");
+  console.log({ code });
 
   if (!code) {
     return NextResponse.json(
@@ -16,7 +19,7 @@ export async function GET(req: Request) {
   const siteUrl =
     process.env.NODE_ENV === "production"
       ? process.env.SITE_URL
-      : "http://localhost:3000";
+      : "https://localhost:3000";
   const redirectUri = `${siteUrl}/api/oauth/callback`;
   console.log({ redirectUri });
 
