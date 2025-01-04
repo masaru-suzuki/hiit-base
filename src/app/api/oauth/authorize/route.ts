@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   const clientId = process.env.POLAR_CLIENT_ID;
+  console.log(process.env.NODE_ENV);
+  console.log(process.env.SITE_URL);
+
   const siteUrl =
     process.env.NODE_ENV === "production"
       ? process.env.SITE_URL
