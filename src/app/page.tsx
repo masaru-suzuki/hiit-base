@@ -1,19 +1,16 @@
+import { useSession } from "@/hooks/session/useSession";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
-  const clientId = process.env.POLAR_CLIENT_ID;
-  const siteUrl =
-    process.env.NODE_ENV === "production"
-      ? process.env.SITE_URL
-      : "https://localhost:3000";
-  const redirectUri = `${siteUrl}/api/oauth/callback`;
-  const polarAuthUrl = `https://flow.polar.com/oauth2/authorization?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
+export default async function Home() {
+  const { polarUserId } = await useSession();
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Link href={polarAuthUrl}>authorize</Link>
+        <h1>Home</h1>
+        <p>{polarUserId}</p>
+        <Link href="/user">User</Link>
       </main>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
         <a

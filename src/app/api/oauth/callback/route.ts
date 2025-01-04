@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { setSession } from "../../session";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -15,7 +16,7 @@ export async function GET(req: Request) {
   const clientSecret = process.env.POLAR_CLIENT_SECRET;
   const siteUrl =
     process.env.NODE_ENV === "production"
-      ? process.env.SITE_URL
+      ? (process.env.SITE_URL as string)
       : "https://localhost:3000";
   const redirectUri = `${siteUrl}/api/oauth/callback`;
 
@@ -55,9 +56,12 @@ export async function GET(req: Request) {
     const data = await response.json();
     const { access_token, x_user_id } = data;
     console.log("success!!", { access_token, x_user_id });
+    await setSession({
+      polarUserId: x_user_id,
+      polarAccessToken: access_token,
+    });
 
-    const successUrl = `${siteUrl}/api/polar/user/?accessToken=${access_token}&identifier=${x_user_id}`;
-    return NextResponse.redirect(successUrl);
+    return NextResponse.redirect(siteUrl);
   } catch (error) {
     return NextResponse.json(
       {
