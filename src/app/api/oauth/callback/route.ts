@@ -13,6 +13,11 @@ export async function GET(req: Request) {
 
   const clientId = process.env.POLAR_CLIENT_ID;
   const clientSecret = process.env.POLAR_CLIENT_SECRET;
+  const siteUrl =
+    process.env.NODE_ENV === "production"
+      ? process.env.SITE_URL
+      : "https://localhost:3000";
+  const redirectUri = `${siteUrl}/api/oauth/callback`;
 
   const headers = {
     "Content-Type": "application/x-www-form-urlencoded",
@@ -21,8 +26,6 @@ export async function GET(req: Request) {
       "base64",
     )}`,
   };
-
-  console.log(headers);
 
   if (!clientId || !clientSecret)
     return NextResponse.json(
@@ -37,9 +40,7 @@ export async function GET(req: Request) {
       body: new URLSearchParams({
         grant_type: "authorization_code",
         code,
-        // redirect_uri: redirectUri,
-        // client_id: clientId,
-        // client_secret: clientSecret,
+        redirect_uri: redirectUri, // このパラメーターは必須
       }).toString(),
     });
 
@@ -52,7 +53,11 @@ export async function GET(req: Request) {
     }
 
     const data = await response.json();
-    return NextResponse.json(data, { status: 200 });
+    const { access_token, x_user_id } = data;
+    console.log("success!!", { access_token, x_user_id });
+
+    const successUrl = `${siteUrl}/api/polar/user/?accessToken=${access_token}&identifier=${x_user_id}`;
+    return NextResponse.redirect(successUrl);
   } catch (error) {
     return NextResponse.json(
       {
