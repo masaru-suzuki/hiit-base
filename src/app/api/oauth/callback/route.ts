@@ -13,7 +13,12 @@ export async function GET(req: Request) {
 
   const clientId = process.env.POLAR_CLIENT_ID;
   const clientSecret = process.env.POLAR_CLIENT_SECRET;
-  const redirectUri = "http://localhost:3000/api/oauth/callback";
+  const siteUrl =
+    process.env.NODE_ENV === "production"
+      ? process.env.SITE_URL
+      : "http://localhost:3000";
+  const redirectUri = `${siteUrl}/api/oauth/callback`;
+  console.log({ redirectUri });
 
   if (!clientId || !clientSecret)
     return NextResponse.json(
