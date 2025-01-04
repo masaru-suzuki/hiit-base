@@ -4,21 +4,20 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const accessToken = searchParams.get("accessToken");
   const identifier = searchParams.get("identifier");
-  console.log(
-    "=========================== GET /api/polar/user ===========================",
-  );
 
-  console.log({ accessToken, identifier });
-
-  if (!accessToken) {
+  if (!accessToken)
     return NextResponse.json(
       { error: "Access token is missing" },
       { status: 400 },
     );
-  }
+
+  if (!identifier)
+    return NextResponse.json(
+      { error: "Identifier is missing" },
+      { status: 400 },
+    );
 
   const headers = {
-    // "Content-Type": "application/xml",
     Accept: "application/json",
     Authorization: `Bearer ${accessToken}`,
   };
@@ -36,10 +35,15 @@ export async function GET(req: Request) {
     console.log("Response Text:", responseText);
 
     if (!response.ok) {
+      console.log("Response Status:", response.status);
+      // console.log(response.body);
+
       // エラーレスポンスの場合
       const errorData = responseText ? JSON.parse(responseText) : {};
       return NextResponse.json(errorData, { status: response.status });
     }
+
+    console.log(response.body);
 
     // 正常なレスポンスの場合
     const data = responseText ? JSON.parse(responseText) : {};
