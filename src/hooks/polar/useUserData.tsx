@@ -1,9 +1,8 @@
 "use server";
-
-import { getSession } from "@/app/api/session";
+import { useSession } from "../session/useSession";
 
 export const useUserData = async () => {
-  const { polarAccessToken, polarUserId } = await getSession();
+  const { polarAccessToken, polarUserId } = await useSession();
 
   const headers = {
     Accept: "application/json",
