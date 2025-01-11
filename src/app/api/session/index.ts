@@ -8,6 +8,13 @@ export type Session = {
   polarAccessToken: string;
 };
 
+/**
+ * クッキーからアクセストークンとユーザーIDを取得する関数
+ * クッキーに認証情報がなければ、認証フローを開始する
+ *   認証フローはPolarの認証画面にリダイレクトさせて、ログインを行う
+ *   PolarからsiteUrlにリダイレクトされて、そのURLにアクセストークンが返ってくる
+ * @returns アクセストークンとユーザーIDを含むオブジェクト
+ */
 export const getSession = async () => {
   const cookieStore = await cookies();
   const polarUserId = cookieStore.get("polarUserId");
@@ -20,6 +27,7 @@ export const getSession = async () => {
     } as Session;
   }
 
+  // POLAR_CLIENT_IDは自分のためのアプリケーションのため、自分のしか入れていない
   const clientId = process.env.POLAR_CLIENT_ID;
   const siteUrl =
     process.env.NODE_ENV === "production"
