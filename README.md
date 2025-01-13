@@ -16,6 +16,16 @@ https://vercel.com/masarusuzuki-socialplusjs-projects/hiit-base
 ## Polar AccessLink API v3
 https://www.polar.com/accesslink-api/?javascript--nodejs#polar-accesslink-api
 
+## Oura API
+https://cloud.ouraring.com/docs/
+
+### Start
+1. Ouraアカウントの作成
+2. 個人のアクセストークンを作成
+    → 個人のデータを取得する（今回はこっち）
+3. APIアプリケーションを作成
+    → 複数人からデータを取得する
+
 ## ログインフロー
 TOPページでクッキーに認証情報がなければ、認証フローを開始する
 クッキーに認証情報がなければ、認証フローを開始する
