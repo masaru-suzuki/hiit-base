@@ -17,14 +17,19 @@ https://vercel.com/masarusuzuki-socialplusjs-projects/hiit-base
 https://www.polar.com/accesslink-api/?javascript--nodejs#polar-accesslink-api
 
 ## Oura API
-https://cloud.ouraring.com/docs/
+
+### APIドキュメント
+https://cloud.ouraring.com/v2/docs
 
 ### Start
 1. Ouraアカウントの作成
 2. 個人のアクセストークンを作成
+    [ドキュメント](https://cloud.ouraring.com/docs/authentication#personal-access-tokens)
+    [Ouraアカウント作成](https://cloud.ouraring.com/user/sign-in?next=%2Fpersonal-access-tokens)
     → 個人のデータを取得する（今回はこっち）
 3. APIアプリケーションを作成
     → 複数人からデータを取得する
+
 
 ## ログインフロー
 TOPページでクッキーに認証情報がなければ、認証フローを開始する
