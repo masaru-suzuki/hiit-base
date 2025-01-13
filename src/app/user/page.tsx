@@ -1,8 +1,10 @@
+import { useCondition } from "@/hooks/oura/useCondition";
 import { useUserData } from "@/hooks/polar/useUserData";
 import Link from "next/link";
 
 export default async function Page() {
   const data = await useUserData();
+  const oura = await useCondition();
 
   const polarUserId = data["polar-user-id"];
   const memberId = data["member-id"];
@@ -22,6 +24,17 @@ export default async function Page() {
         Hello, {lastName} {firstName} !<br />
         体重は、{weight}kg、身長は{height}cmです。
       </p>
+      <ul>
+        {oura.map((item) => {
+          return (
+            <li key={item.id}>
+              <p>day: {item.day}</p>
+              <p>type: {item.type}</p>
+              <p>averageHeartRate: {item.average_heart_rate}</p>
+            </li>
+          );
+        })}
+      </ul>
       <Link href="/exercise/">エクササイズ情報はこちら</Link>
     </div>
   );
